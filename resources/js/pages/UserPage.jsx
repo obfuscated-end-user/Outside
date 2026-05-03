@@ -84,21 +84,13 @@ export default function UserPage() {
 				<div className="space-y-4">
 					{posts.map(post => (
 						<FeedPostCard
-							key={post.id}
-							post={post}
-							user={currentUser}
-							navigate={navigate}
-							isEditingAny={isEditingAny}
-							setPosts={setPosts}
-							onDelete={handleDelete}
-							onUpdate={handleUpdate}
+							key={post.id} post={post} user={currentUser} navigate={navigate} isEditingAny={isEditingAny}
+							setPosts={setPosts} onDelete={handleDelete} onUpdate={handleUpdate}
 						/>
 					))}
 				</div>
 				<ConfirmModal
-					show={confirmState.show}
-					message={confirmState.message}
-					onClose={closeConfirm}
+					show={confirmState.show} message={confirmState.message} onClose={closeConfirm}
 					onConfirm={confirmState.onConfirm}
 				/>
 			</div>

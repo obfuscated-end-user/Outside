@@ -117,8 +117,8 @@ export default function HomePage() {
 	// If not authenticated, show a register and login form.
 	if (!authenticated) {
 		return (
-			<Layout>
-				<div className="p-8 space-y-8">
+			<div className="min-h-screen bg-gray-100 flex items-center justify-center">
+				<div className="w-full max-w-md space-y-6">
 					<h1 className="text-4xl font-bold text-center mb-12">Outside</h1>
 					<RegisterForm
 						form={registerForm} setForm={setRegisterForm} onSubmit={handleRegister}
@@ -130,7 +130,7 @@ export default function HomePage() {
 						loading={loggingIn} error={loginError} clearError={() => setLoginError(null)}
 					/>
 				</div>
-			</Layout>
+			</div>
 		);
 	}
 
