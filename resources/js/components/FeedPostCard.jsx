@@ -1,5 +1,3 @@
-import PostEditor from "./PostEditor";
-
 export default function FeedPostCard({ post, user, navigate, isEditingAny, setPosts, onDelete, onUpdate, disableNavigation = false, onNavigateOverride = null }) {
 	const handleNavigate = () => {
 		if (disableNavigation) return;
