@@ -1,7 +1,8 @@
 import { useAuth } from "./AuthContext";
+import { Link } from "react-router-dom";
 
 export default function Layout({ children }) {
-	const { logout } = useAuth();
+	const { user, logout } = useAuth();
 
 	// Links don't work yet.
 	return (
@@ -11,10 +12,10 @@ export default function Layout({ children }) {
 				<h1 className="text-xl font-bold mb-6">Outside</h1>
 				<p className="font-bold mb-6 text-gray-400">Time to go outside, I guess.</p>
 				<nav className="space-y-2">
-					<a className="block hover:underline cursor-pointer">Home</a>
-					<a className="block hover:underline cursor-pointer">Profile</a>
-					<a className="block hover:underline cursor-pointer">Settings</a>
-					<a className="block hover:underline cursor-pointer">New post</a>
+					<Link to="/" className="block hover:underline cursor-pointer">Home</Link>
+					<Link to={`/u/${user?.name}`} className="block hover:underline cursor-pointer">Profile</Link>
+					<Link className="block hover:underline cursor-pointer">Settings</Link>
+					<Link className="block hover:underline cursor-pointer">New post</Link>
 					<button onClick={logout} className="block text-left w-full hover:underline cursor-pointer text-red-600">
 						Log out
 					</button>
