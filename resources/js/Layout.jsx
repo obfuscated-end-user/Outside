@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export default function Layout({ children }) {
 	const { user, logout } = useAuth();
 
-	// Links don't work yet.
+	// Some of the links don't work yet.
 	return (
 		<div className="min-h-screen bg-gray-100 flex justify-center">
 			{/* left sidebar */}
@@ -20,7 +20,7 @@ export default function Layout({ children }) {
 						Log out
 					</button>
 				</nav>
-				{/* Push footer down */}
+				{/* push footer down */}
 				<div className="mt-auto text-sm text-gray-500">
 					© {new Date().getFullYear()} random programmers incorporated.
 				</div>
@@ -36,4 +36,3 @@ export default function Layout({ children }) {
 		</div>
 	);
 }
-// obfuscated-end-user.
