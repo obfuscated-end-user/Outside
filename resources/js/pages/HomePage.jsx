@@ -68,9 +68,9 @@ export default function HomePage() {
 			return;
 		}
 		openConfirm("Create this post?", async () => {
-			// Sends "POST /create-post" with the new body.
-			await axiosClient.post("/create-post", { body: newPost.body });
-			const res = await axiosClient.get("/posts");
+			// Sends "POST /api/posts" with the new body.
+			await axiosClient.post("/api/posts", { body: newPost.body });
+			const res = await axiosClient.get("/api/posts");
 			setPosts(res.data);
 			setNewPost({ body: "" });	// Clear the form.
 			setFormError("");
@@ -80,7 +80,7 @@ export default function HomePage() {
 
 	const handleDeletePost = async id => {
 		openConfirm("Are you sure you want to delete this post?", async () => {
-			await axiosClient.delete(`/delete-post/${id}`);		// "DELETE /delete-posts/${id}"
+			await axiosClient.delete(`/api/posts/${id}`);		// "DELETE /api/posts/${id}"
 			setPosts(prev => prev.filter(p => p.id !== id));	// Removes that post from the list.
 			closeConfirm();
 		});
@@ -96,7 +96,7 @@ export default function HomePage() {
 				// Sends "PUT /edit-post/{id}" with new body.
 				// Laravel PostController::updatePost validates and saves to database.
 				// Returns updated post as JSON (res.data)
-				const res = await axiosClient.put(`/edit-post/${id}`, { body });
+				const res = await axiosClient.put(`/api/posts/${id}`, { body });
 				// prev.map creates new array and finds post where p.id === id (the one being edited), replaces it with
 				// res.data (fresh backend data) and resets editing flags.
 				// Then, it keeps all other posts unchanged (": p" at the end), and { ...res.data, isEditing: false, ... }

@@ -20,7 +20,7 @@ export default function PostPage() {
 
 	const handleDelete = () => {
 		openConfirm("Delete this post?", async () => {
-			await axiosClient.delete(`/delete-post/${post.id}`);
+			await axiosClient.delete(`/api/posts/${post.id}`);
 			// navigate(`/u/${username}`);
 			navigate("/");	// go to home page instead of 404ing
 			closeConfirm();
@@ -31,7 +31,7 @@ export default function PostPage() {
 		if (!editBody.trim()) return;
 		openConfirm("Save changes to this post?", async () => {
 			try {
-				const res = await axiosClient.put(`/edit-post/${post.id}`, { body: editBody });
+				const res = await axiosClient.put(`/api/posts/${post.id}`, { body: editBody });
 				setPost(res.data);
 				setIsEditing(false);
 			} catch (err) {

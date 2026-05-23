@@ -2,87 +2,83 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Http\Request;
 
 // The PostController handles all post-related web requests, (create, edit, update, delete).
+// TBD, some functions don't have comments describing what they do.
 class PostController extends Controller {
+	private function validatePost(Request $request): array {
+		// Checks if 'body' is filled.
+		// https://api.laravel.com/docs/12.x/Illuminate/Http/Request.html#method_validate
+		$data = $request->validate(['body' => ['required', 'max:400']]);
+		// Strip any potential HTML and PHP stuff the user might enter.
+		// https://www.php.net/manual/en/function.strip-tags.php
+		$data['body'] = strip_tags($data['body']);
+
+		return $data;
+	}
+
+	// TBD
+	private function authorizePost(Post $post): void {
+		abort_if(auth()->guard()->id() !== $post->user_id, 403);
+	}
+
 	// Generate Post ID.
-	function generatePostId() {
+	private function generatePostId(): string {
 		$chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 		do {
 			$id = '';
 			for ($i = 0; $i < 15; $i++)
 				$id .= $chars[random_int(0, strlen($chars) - 1)];
-		} while (\App\Models\Post::where('id', $id)->exists());
+		} while (Post::where('id', $id)->exists());
 
 		return $id;
 	}
 
-	// Create a new post.
-	public function createPost(Request $request) {
-		// Checks if 'body' is filled.
-		// https://api.laravel.com/docs/12.x/Illuminate/Http/Request.html#method_validate
-		$incomingFields = $request->validate([
-			'body' => ['required', 'max:400']
-		]);
+	public function index() {
+		return Post::withUser()->latest()->get();
+	}
 
-		// Strip any potential HTML and PHP stuff the user might enter.
-		// https://www.php.net/manual/en/function.strip-tags.php
-		$incomingFields['body'] = strip_tags($incomingFields['body']);
+	public function show(Post $post) {
+		return $post->loadUser();
+	}
+
+	public function userPosts(User $user) {
+		return $user->usersPosts()->withUser()->latest()->get();
+	}
+
+	public function store(Request $request) {
+		$data = $this->validatePost($request);
 		// use the current user's id as `user_id`
-		$incomingFields['user_id'] = auth()->guard()->id();
-		$incomingFields['id'] = $this->generatePostId();
+		$data['id'] = $this->generatePostId();
+		$data['user_id'] = auth()->guard()->id();
 
 		// Use Post model to create this field and save to database.
 		// I think this is it here?
 		// https://api.laravel.com/docs/12.x/Illuminate/Database/Eloquent/Builder.html#method_create
-		$post = Post::create($incomingFields);
+		$post = Post::create($data);
 
 		// Return a response as a JSON.
 		// https://laravel.com/docs/12.x/responses
-		return response()->json(
-			$post->load('user:id,name,display_name'),
-			201
-		);
-	}
-
-	// Shows the edit form, Laravel finds the post automatically by ID from the URL.
-	public function showEditScreen(Post $post) {
-		// To prevent unauthorized users entering this page (ex. not the author of this post),
-		if (auth()->guard()->user()->id !== $post->user_id)
-			// return a response that prevents them from accessing it.
-			return response()->json(['message' => 'Forbidden'], 403);
-
-		// Default status is 200.
-		return response()->json($post);
+		return response()->json($post->loadUser(), 201);
 	}
 
 	// Saves edited posts.
 	// $post is the post we're trying to update and $request gives us the incoming form data,
 	// whatever the user typed in for their new values.
-	public function updatePost(Post $post, Request $request) {
-		if (auth()->guard()->user()->id !== $post->user_id)
-			return response()->json(['message' => 'Forbidden'], 403);
-
-		$incomingFields = $request->validate([
-			'body' => ['required', 'max:400']
-		]);
-
-		$incomingFields['body'] = strip_tags($incomingFields['body']);
-
+	public function update(Post $post, Request $request) {
+		$this->authorizePost($post);
 		// Update the post with the values provided.
 		// https://api.laravel.com/docs/12.x/Illuminate/Database/Eloquent/Builder.html#method_update
-		$post->update($incomingFields);
+		$post->update($this->validatePost($request));
 
-		return response()->json(
-			$post->load('user:id,name,display_name')
-		);
+		return $post->loadUser();
 	}
 
-	public function deletePost(Post $post) {
-		if (auth()->guard()->user()->id !== $post->user_id)
-			return response()->json(['message' => 'Forbidden'], 403);
+	public function destroy(Post $post) {
+		$this->authorizePost($post);
 		$post->delete();
 		return response()->json(['message' => 'Deleted']);
 	}

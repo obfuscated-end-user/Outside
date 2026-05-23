@@ -6,7 +6,7 @@
 		"build": "vite build",
 		"dev:vite": "vite",
 		"dev": "concurrently \"php artisan serve\" \"vite\"",
-		"start": "concurrently \"net start mysql80\" \"php artisan serve\" \"npm run dev:vite\""
+		"start": "concurrently \"net start mysql80\" \"php artisan serve --host=127.0.0.1 --port=8000\" \"npm run dev:vite\""
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.2.1",

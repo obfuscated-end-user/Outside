@@ -1,48 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-use App\Models\Post;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 
-Route::get('/user', function (Request $request) {
-	return $request->user();
-});
+/* Route::controller(UserController::class)->group(function () {
+	Route::post('/register', 'register');
+	Route::post('/login', 'login');
+	Route::post('/logout', 'logout');
+	Route::get('/me', 'me');
+}); */
 
-Route::get('/posts', function () {
-	if (!auth()->guard()->check())
-		return [];
-	return auth()->guard()->user()->usersPosts()->latest()->get();
-});
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{post}', [PostController::class, 'show']);
 
-Route::post('/posts', function (Request $request) {
-	$data = $request->validate([
-		'body' => ['required', 'max:400']
-	]);
+Route::get('/users/{user:name}', [UserController::class, 'show']);
+Route::get('/users/{user:name}/posts', [PostController::class, 'userPosts']);
 
-	$data['body'] = strip_tags($data['body']);
-	$data['user_id'] = auth()->guard()->id();
-
-	return Post::create($data);
-});
-
-Route::delete('/posts/{post}', function (Post $post) {
-	if ($post->user_id !== auth()->guard()->id())
-		abort(403);
-
-	$post->delete();
-
-	return ['success'=>true];
-});
-
-Route::put('/posts/{post}', function (Post $post, Request $request) {
-	if ($post->user_id !== auth()->guard()->id())
-		abort(403);
-
-	$data = $request->validate([
-		'body' => ['required', 'max:400']
-	]);
-
-	$post->update($data);
-
-	return $post;
-});
+/* Route::middleware('auth:web')->group(function () {
+	Route::post('/posts', [PostController::class, 'store']);
+	Route::put('/posts/{post}', [PostController::class, 'update']);
+	Route::delete('/posts/{post}', [PostController::class, 'destroy']);
+}); */

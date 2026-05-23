@@ -10,7 +10,7 @@ export function usePosts(enabled, view, selectedUserId) {
 	useEffect(() => {
 		if (!enabled) return;	// skip if not authenticated
 		setLoading(true);
-		const url = view === "feed" ? "/posts" : `/users/${selectedUserId}/posts`;
+		const url = view === "feed" ? "/api/posts" : `/api/users/${selectedUserId}/posts`;
 		axiosClient.get(url)	// fetch from Laravel /posts route or a single user, /user
 			.then(res => setPosts(res.data))	// store posts
 			.finally(() => setLoading(false));	// always stop loading

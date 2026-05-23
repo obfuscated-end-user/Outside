@@ -27,7 +27,7 @@ export default function UserPage() {
 
 	const handleDelete = id => {
 		openConfirm("Delete this post?", async () => {
-			await axiosClient.delete(`/delete-post/${id}`);
+			await axiosClient.delete(`/api/posts/${id}`);
 			setPosts(prev => prev.filter(p => p.id !== id));
 			closeConfirm();
 		});
@@ -36,7 +36,7 @@ export default function UserPage() {
 	const handleUpdate = async (id, body) => {
 		if (!body.trim()) return;
 		openConfirm("Save changes to this post?", async () => {
-			const res = await axiosClient.put(`/edit-post/${id}`, { body });
+			const res = await axiosClient.put(`/api/posts/${id}`, { body });
 			setPosts(prev =>
 				prev.map(p => p.id === id ? { ...res.data, isEditing: false, editBody: "" } : p));
 			closeConfirm();

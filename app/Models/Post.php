@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 // A Laravel Model is a PHP class that represents one database table. Think of it as "your database
 // table, but as a smart PHP object", instead of raw SQL Queries.
@@ -29,6 +30,15 @@ class Post extends Model {
 		// Return a blog Post (this file) that belongs to a User', and `user_id` belongs to the
 		// Post table.
 		// Laravel will write the SQL statement and perform the JOIN for us.
-		return $this->belongsTo(User::class, 'user_id');
+		return $this->belongsTo(User::class);
+		// return $this->belongsTo(User::class, 'user_id');
+	}
+
+	public function scopeWithUser(Builder $query): Builder {
+		return $query->with('user:id,name,display_name');
+	}
+
+	public function loadUser(): self {
+		return $this->load('user:id,name,display_name');
 	}
 }
