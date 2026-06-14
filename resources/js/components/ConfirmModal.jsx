@@ -7,7 +7,7 @@ export default function ConfirmModal({ show, message, onClose, onConfirm,}) {
 			onClick={onClose}
 		>
 			<div
-				className="bg-white p-6 rounded-lg shadow-lg w-80"
+				className="bg-white p-6 rounded-lg shadow-lg w-80 dark:bg-gray-800"
 				onClick={e => e.stopPropagation()}
 			>
 				<p className="text-lg mb-4">{message}</p>

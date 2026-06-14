@@ -1,6 +1,6 @@
 export default function NewPostForm({ newPost, setNewPost, onSubmit, error }) {
 	return (
-		<div className="border p-6 rounded-xl bg-white shadow-sm">
+		<div className="border p-6 rounded-xl bg-white shadow-sm dark:bg-gray-900">
 			{/* border p-8 rounded-lg */}
 			<h2 className="text-2xl font-semibold mb-6">New post</h2>
 			<form onSubmit={onSubmit}>

@@ -64,7 +64,7 @@ export default function UserPage() {
 		<Layout>
 			<div className="space-y-6">
 				{/* user header */}
-				<div className="border p-6 rounded-xl bg-white shadow-sm space-y-4">
+				<div className="border p-6 rounded-xl bg-white shadow-sm space-y-4 dark:bg-gray-900">
 					<div>
 						<h1 className="text-2xl font-bold text-gray-900">{user.display_name}</h1>
 						<p className="text-blue-600 font-medium">@{user.name}</p>

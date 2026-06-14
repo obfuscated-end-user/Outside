@@ -11,18 +11,17 @@ export default function FeedPostCard({ post, user, navigate, isEditingAny, setPo
 				if (isEditingAny) return;
 				if (e.target.closest("[data-no-nav]")) return;
 				handleNavigate();
-				// navigate(`/u/${post.user?.name}/${post.id}`);
 			}}
 			className={
-				"bg-gray-100 p-6 m-0 relative border border-gray-300 rounded-lg shadow-sm mb-2 " +
+				"dark:bg-gray-900 bg-gray-100 p-6 m-0 relative border border-gray-300 rounded-lg shadow-sm mb-2 " +
 				(isEditingAny && !post.isEditing ? "opacity-60" : !disableNavigation
-				? "hover:bg-blue-100 cursor-pointer"
+				? "hover:bg-blue-100 dark:hover:bg-blue-950 dark:text-white cursor-pointer"
 				: "")
 			}
 		>
 			{post.isEditing ? (
 				<div
-					className="border-2 border-blue-500 p-6 bg-blue-50 rounded-lg" data-no-nav
+					className="border-2 border-blue-500 p-6 bg-blue-50 rounded-lg dark:bg-gray-800" data-no-nav
 					onClick={e => e.stopPropagation()}
 				>
 					<h3 className="text-xl font-semibold mb-4 text-blue-800">Edit post</h3>
@@ -47,7 +46,7 @@ export default function FeedPostCard({ post, user, navigate, isEditingAny, setPo
 							onClick={() => setPosts(prev => prev.map(
 								p => p.id === post.id ? {...p, isEditing: false, editBody: ""} : p))}
 							className={"px-4 py-2 border border-gray-300 text-gray-700 " +
-								"cursor-pointer rounded-lg hover:bg-gray-50 transition-colors"}
+								"cursor-pointer rounded-lg hover:bg-gray-50 transition-colors dark:text-white"}
 						>
 							Cancel
 						</button>
@@ -65,14 +64,14 @@ export default function FeedPostCard({ post, user, navigate, isEditingAny, setPo
 						>
 							{post.user?.display_name}@{post.user?.name}
 						</span>&nbsp;
-						<span className="text-sm text-gray-500 mb-2">
+						<span className="text-sm text-gray-500 mb-2 dark:text-white">
 							{new Date(post.created_at).toLocaleString()}
 							{post.updated_at !== post.created_at && (
 								<>{", last edited at " + new Date(post.updated_at).toLocaleString()}</>)}
 						</span>
 					</h3>
 					<div
-						className="whitespace-pre-wrap mb-4 text-gray-800 leading-relaxed"
+						className="whitespace-pre-wrap mb-4 text-gray-800 leading-relaxed dark:text-white"
 					>
 						{post.body}
 					</div>
@@ -80,7 +79,7 @@ export default function FeedPostCard({ post, user, navigate, isEditingAny, setPo
 						<div className="flex gap-3 pt-4">
 							<button
 								className={
-									"text-yellow-600 hover:underline cursor-pointer" +
+									"text-gray-500 dark:text-white hover:underline cursor-pointer" +
 									(isEditingAny && !post.isEditing ? "opacity-50 pointer-events-none" : "")
 								}
 								data-no-nav

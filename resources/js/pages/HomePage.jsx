@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import axiosClient from "../api/axiosClient";
 import { usePosts } from "../hooks/usePosts";
@@ -138,32 +138,35 @@ export default function HomePage() {
 	// create a new post, a list of all their posts.
 	return (
 		<Layout>
-			<div className="space-y-6">
-				<p className="text-xl font-semibold text-gray-700">
-					You are logged in as{" "}
-					<span className="font-bold text-blue-600">{user?.name}</span>
-				</p>
-				<NewPostForm
-					newPost={newPost} setNewPost={setNewPost} onSubmit={handleCreatePost}
-					error={formError}
-				/>
-				<div className="rounded-lg">
-					{postsLoading && (<p className="text-lg text-gray-500">Loading posts...</p>)}
-					<div className="space-y-4">
-						{posts.map(post => (
-							<FeedPostCard
-								key={post.id} post={post} user={user} navigate={navigate}
-								isEditingAny={isEditingAny} setPosts={setPosts}
-								onDelete={handleDeletePost} onUpdate={handleUpdatePost}
-							/>
-						))}
+			<div className="animate-page">
+				<div className="space-y-6">
+					<p className="text-xl font-semibold text-gray-700 dark:text-white">
+						You are logged in as{" "}
+						<Link to={`/u/${user?.name}`} className="hover:underline cursor-pointer font-bold text-blue-600">{user?.name}</Link>
+					</p>
+					<NewPostForm
+						newPost={newPost} setNewPost={setNewPost} onSubmit={handleCreatePost}
+						error={formError}
+					/>
+					<div className="rounded-lg">
+						{postsLoading && (<p className="text-lg text-gray-500">Loading posts...</p>)}
+						<div className="space-y-4">
+							{posts.map(post => (
+								<FeedPostCard
+									className="animate-card"
+									key={post.id} post={post} user={user} navigate={navigate}
+									isEditingAny={isEditingAny} setPosts={setPosts}
+									onDelete={handleDeletePost} onUpdate={handleUpdatePost}
+								/>
+							))}
+						</div>
 					</div>
-				</div>
 
-				<ConfirmModal
-					show={confirmState.show} message={confirmState.message}
-					onClose={closeConfirm} onConfirm={confirmState.onConfirm}
-				/>
+					<ConfirmModal
+						show={confirmState.show} message={confirmState.message}
+						onClose={closeConfirm} onConfirm={confirmState.onConfirm}
+					/>
+				</div>
 			</div>
 		</Layout>
 	);
