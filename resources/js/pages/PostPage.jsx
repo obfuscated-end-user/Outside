@@ -21,8 +21,7 @@ export default function PostPage() {
 	const handleDelete = () => {
 		openConfirm("Delete this post?", async () => {
 			await axiosClient.delete(`/api/posts/${post.id}`);
-			// navigate(`/u/${username}`);
-			navigate("/");	// go to home page instead of 404ing
+			navigate("/");	// go to home page
 			closeConfirm();
 		});
 	};

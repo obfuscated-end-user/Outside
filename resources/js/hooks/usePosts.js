@@ -5,7 +5,7 @@ import axiosClient from "../api/axiosClient";
 // `enabled` controls when to fetch posts (only runs when true)
 export function usePosts(enabled, view, selectedUserId) {
 	const [posts, setPosts] = useState([]);			// array of post data
-	const [loading, setLoading] = useState(false);	// loading spinner state
+	const [loading, setLoading] = useState(false);	// loading state
 
 	useEffect(() => {
 		if (!enabled) return;	// skip if not authenticated
