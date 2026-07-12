@@ -15,7 +15,7 @@ class PostController extends Controller {
 		$data = $request->validate(['body' => ['required', 'max:400']]);
 		// Strip any potential HTML and PHP stuff the user might enter.
 		// https://www.php.net/manual/en/function.strip-tags.php
-		$data['body'] = strip_tags($data['body']);
+		$data['body'] = trim(strip_tags($data['body']));
 
 		return $data;
 	}
@@ -80,6 +80,8 @@ class PostController extends Controller {
 	public function destroy(Post $post) {
 		$this->authorizePost($post);
 		$post->delete();
-		return response()->json(['message' => 'Deleted']);
+		return response()->noContent();
+		// if the frontend needs a message after you delete a post then use this instead
+		// return response()->json(['message' => 'Deleted']);
 	}
 }

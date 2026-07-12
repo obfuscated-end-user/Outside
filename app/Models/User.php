@@ -41,7 +41,7 @@ class User extends Authenticatable {
 		];
 	}
 
-	public function usersPosts() {
+	public function posts() {
 		// return a relationship between a user and any blog posts they've created
 		return $this->hasMany(Post::class, 'user_id');
 	}

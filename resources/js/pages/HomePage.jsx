@@ -69,9 +69,8 @@ export default function HomePage() {
 		}
 		openConfirm("Create this post?", async () => {
 			// Sends "POST /api/posts" with the new body.
-			await axiosClient.post("/api/posts", { body: newPost.body });
-			const res = await axiosClient.get("/api/posts");
-			setPosts(res.data);
+			const res = await axiosClient.post("/api/posts",{ body:newPost.body });
+			setPosts(prev => [res.data, ...prev]);
 			setNewPost({ body: "" });	// Clear the form.
 			setFormError("");
 			closeConfirm();
@@ -106,6 +105,7 @@ export default function HomePage() {
 				));
 				closeConfirm();
 			} catch (err) {
+				// replace this alert() later with something more "user-friendly" 
 				alert("Failed to update post.");
 			}
 		});

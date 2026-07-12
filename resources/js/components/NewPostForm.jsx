@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function NewPostForm({ newPost, setNewPost, onSubmit, error }) {
+	// TBD make save btn disable while saving or something
+	const [saving, setSaving] = useState(false);
 	return (
 		<div className="border p-6 rounded-xl bg-white shadow-sm dark:bg-gray-900">
 			{/* border p-8 rounded-lg */}
@@ -14,6 +18,7 @@ export default function NewPostForm({ newPost, setNewPost, onSubmit, error }) {
 				<button
 					className={"w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 " +
 						"cursor-pointer transition-colors font-semibold"}
+					disabled={saving}
 				>
 					Save post
 				</button>

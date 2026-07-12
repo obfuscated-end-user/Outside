@@ -1,9 +1,12 @@
+import { useCallback } from "react";
+
 export default function FeedPostCard({ post, user, navigate, isEditingAny, setPosts, onDelete, onUpdate, disableNavigation = false, onNavigateOverride = null }) {
-	const handleNavigate = () => {
+	// whoa memory leak
+	const handleNavigate = useCallback(() => {
 		if (disableNavigation) return;
 		if (onNavigateOverride) return onNavigateOverride(post);
 		navigate(`/u/${post.user?.name}/${post.id}`);
-	}
+	}, [disableNavigation, onNavigateOverride, post, navigate]);
 
 	return (
 		<div
@@ -15,7 +18,7 @@ export default function FeedPostCard({ post, user, navigate, isEditingAny, setPo
 			className={
 				"dark:bg-gray-900 bg-gray-100 p-6 m-0 relative border border-gray-300 rounded-lg shadow-sm mb-2 " +
 				(isEditingAny && !post.isEditing ? "opacity-60" : !disableNavigation
-				? "hover:bg-blue-100 dark:hover:bg-blue-950 dark:text-white cursor-pointer"
+				? "hover:bg-blue-100 dark:hover:bg-blue-950 dark:text-white cursor-pointer "
 				: "")
 			}
 		>
@@ -35,10 +38,11 @@ export default function FeedPostCard({ post, user, navigate, isEditingAny, setPo
 					<p className="text-sm text-gray-500">{(post.editBody ?? post.body).length}/400</p>
 					<div className="flex gap-3 pt-2">
 						<button
-							disabled={!post.editBody?.trim()}
+							disabled={!post.editBody?.trim() || post.editBody === post.body}
 							onClick={() => onUpdate(post.id, post.editBody ?? "")}
 							className={"flex-1 bg-blue-600 text-white py-2 px-4 rounded-lg " +
-								"hover:bg-blue-700 cursor-pointer transition-colors font-semibold"}
+								"hover:bg-blue-700 cursor-pointer transition-colors font-semibold " +
+								"disabled:cursor-not-allowed disabled:opacity-50"}
 						>
 							Save
 						</button>

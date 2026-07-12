@@ -21,7 +21,7 @@ class UserController extends Controller {
 			'display_name' => $user->display_name,
 			'created_at' => $user->created_at,
 			'updated_at' => $user->updated_at,
-			'post_count' => $user->usersPosts()->count(),
+			'post_count' => $user->posts()->count(),
 		]);
 	}
 
@@ -29,7 +29,7 @@ class UserController extends Controller {
 		// Validate the registration data.
 		// If the validation fails, Laravel won't move past this line.
 		$request->merge([
-			'name' => strtolower($request->name),
+			'name' => $request->name,
 			'email' => strtolower($request->email),
 		]);
 

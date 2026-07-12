@@ -13,6 +13,7 @@ export function usePosts(enabled, view, selectedUserId) {
 		const url = view === "feed" ? "/api/posts" : `/api/users/${selectedUserId}/posts`;
 		axiosClient.get(url)	// fetch from Laravel /posts route or a single user, /user
 			.then(res => setPosts(res.data))	// store posts
+			.catch(() => setPosts([]))
 			.finally(() => setLoading(false));	// always stop loading
 	}, [enabled, view, selectedUserId]);
 

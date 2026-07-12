@@ -11,7 +11,7 @@ import NotFound from "./pages/NotFound";
 function ProtectedRoute({ children }) {
 	const { authenticated, loading } = useAuth();
 	if (loading) return <div className="p-8">Loading...</div>;
-	if (!authenticated) return <Navigate to="/" />;
+	if (!authenticated) return <Navigate to="/"/>;
 
 	return children;
 }
