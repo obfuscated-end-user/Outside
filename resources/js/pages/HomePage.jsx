@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import axiosClient from "../api/axiosClient";
 import { usePosts } from "../hooks/usePosts";
+import useConfirm from "../hooks/useConfirm";
 import Layout from "../Layout";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
@@ -30,19 +31,9 @@ export default function HomePage() {
 	const [loginForm, setLoginForm] = useState({ name: "", password: "" });
 	const [newPost, setNewPost] = useState({ body: "" });
 	const [formError, setFormError] = useState("");
-	const [confirmState, setConfirmState] = useState({ show: false, message: "", onConfirm: null });
-	// this has to be at the bottom
-	// 2026/04/18: i forgot what this does
+	const { confirmState, openConfirm, closeConfirm } = useConfirm();
 	const { posts, setPosts, loading: postsLoading } = usePosts(authenticated, "feed", null);
 	const isEditingAny = posts.some(p => p.isEditing);
-
-	const openConfirm = (message, onConfirm) => {
-		setConfirmState({ show: true, message, onConfirm });
-	};
-
-	const closeConfirm = () => {
-		setConfirmState({ show: false, message: "", onConfirm: null });
-	};
 
 	const handleRegister = async e => {
 		e.preventDefault();	// prevent the page from reloading

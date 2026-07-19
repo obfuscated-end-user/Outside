@@ -6,6 +6,7 @@ import { useAuth } from "../AuthContext";
 import NotFound from "./NotFound";
 import FeedPostCard from "../components/FeedPostCard";
 import ConfirmModal from "../components/ConfirmModal";
+import useConfirm from "../hooks/useConfirm";
 
 export default function UserPage() {
 	const { username } = useParams();
@@ -15,15 +16,7 @@ export default function UserPage() {
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const isEditingAny = posts.some(p => p.isEditing);
-	const [confirmState, setConfirmState] = useState({ show: false, message: "", onConfirm: null });
-
-	const openConfirm = (message, onConfirm) => {
-		setConfirmState({ show: true, message, onConfirm });
-	};
-
-	const closeConfirm = () => {
-		setConfirmState({ show: false, message: "", onConfirm: null });
-	};
+	const { confirmState, openConfirm, closeConfirm } = useConfirm();
 
 	const handleDelete = id => {
 		openConfirm("Delete this post?", async () => {

@@ -46,7 +46,7 @@ class PostController extends Controller {
 	}
 
 	public function userPosts(User $user) {
-		return $user->usersPosts()->withUser()->latest()->get();
+		return $user->posts()->withUser()->latest()->get();
 	}
 
 	public function store(Request $request) {

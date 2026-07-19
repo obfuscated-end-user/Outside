@@ -7,6 +7,7 @@ import NotFound from "./NotFound";
 import PostEditor from "../components/PostEditor";
 import ConfirmModal from "../components/ConfirmModal";
 import FeedPostCard from "../components/FeedPostCard";
+import useConfirm from "../hooks/useConfirm";
 
 export default function PostPage() {
 	const { username, postId } = useParams();
@@ -16,36 +17,7 @@ export default function PostPage() {
 	const [loading, setLoading] = useState(true);
 	const [isEditing, setIsEditing] = useState(false);
 	const [editBody, setEditBody] = useState("");
-	const [confirmState, setConfirmState] = useState({ show: false, message: "", onConfirm: null });
-
-	const handleDelete = () => {
-		openConfirm("Delete this post?", async () => {
-			await axiosClient.delete(`/api/posts/${post.id}`);
-			navigate("/");	// go to home page
-			closeConfirm();
-		});
-	};
-
-	const handleUpdate = () => {
-		if (!editBody.trim()) return;
-		openConfirm("Save changes to this post?", async () => {
-			try {
-				const res = await axiosClient.put(`/api/posts/${post.id}`, { body: editBody });
-				setPost(res.data);
-				setIsEditing(false);
-			} catch (err) {
-				alert("Failed to update post");
-			}
-		});
-	};
-
-	const openConfirm = (message, onConfirm) => {
-		setConfirmState({ show: true, message, onConfirm });
-	}
-
-	const closeConfirm = () => {
-		setConfirmState({ show: false, message: "", onConfirm: null });
-	}
+	const { confirmState, openConfirm, closeConfirm } = useConfirm();
 
 	useEffect(() => {
 		setLoading(true);
