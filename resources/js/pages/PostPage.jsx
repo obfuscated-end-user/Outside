@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axiosClient from "../api/axiosClient";
+
 import Layout from "../Layout";
-import { useAuth } from "../AuthContext";
 import NotFound from "./NotFound";
+import axiosClient from "../api/axiosClient";
+import { useAuth } from "../AuthContext";
 import PostEditor from "../components/PostEditor";
 import ConfirmModal from "../components/ConfirmModal";
 import FeedPostCard from "../components/FeedPostCard";
@@ -37,10 +38,11 @@ export default function PostPage() {
 				setPosts={fn => {
 						// adapt single post into array-like update
 						setPost(prev => {
-						const updated = fn([prev])[0];
-						return updated;
-					});
-				}}
+							const updated = fn([prev])[0];
+							return updated;
+						});
+					}
+				}
 				onDelete={() => handleDelete()}
 				onUpdate={(id, body) => { setEditBody(body); handleUpdate(); }}
 				disableNavigation={true}

@@ -1,12 +1,12 @@
 import React from "react";
-import { Routes, Route, Navigate} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import { useAuth } from "./AuthContext";
 
 import HomePage from "./pages/HomePage";
-import UserPage from "./pages/UserPage";
-import PostPage from "./pages/PostPage";
 import NotFound from "./pages/NotFound";
+import PostPage from "./pages/PostPage";
+import UserPage from "./pages/UserPage";
 
 function ProtectedRoute({ children }) {
 	const { authenticated, loading } = useAuth();

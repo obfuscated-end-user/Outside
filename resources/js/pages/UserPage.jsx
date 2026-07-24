@@ -44,7 +44,7 @@ export default function UserPage() {
 		])
 			.then(([userRes, postsRes]) => {
 				setUser(userRes.data);
-				setPosts(postsRes.data.map(p => ({...p, isEditing: false, editBody: ""})));
+				setPosts(postsRes.data.map(p => ({ ...p, isEditing: false, editBody: "" })));
 			})
 			.catch(() => setUser(null))
 			.finally(() => setLoading(false));

@@ -1,4 +1,4 @@
-export default function ConfirmModal({ show, message, onClose, onConfirm,}) {
+export default function ConfirmModal({ show, message, onClose, onConfirm }) {
 	if (!show) return null;
 
 	return (

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+
 import { useAuth } from "../AuthContext";
-import axiosClient from "../api/axiosClient";
-import { usePosts } from "../hooks/usePosts";
-import useConfirm from "../hooks/useConfirm";
 import Layout from "../Layout";
-import RegisterForm from "../components/RegisterForm";
+import axiosClient from "../api/axiosClient";
+import useConfirm from "../hooks/useConfirm";
+import { usePosts } from "../hooks/usePosts";	// is this any different from `import usePosts`?
+import ConfirmModal from "../components/ConfirmModal";
+import FeedPostCard from "../components/FeedPostCard";
 import LoginForm from "../components/LoginForm";
 import NewPostForm from "../components/NewPostForm";
-import FeedPostCard from "../components/FeedPostCard";
-import ConfirmModal from "../components/ConfirmModal";
+import RegisterForm from "../components/RegisterForm";
 
 // This is the main React app component that shows the login/register UI when the user is not
 // authenticated, the post creation and post list UI when the user is logged in.

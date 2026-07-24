@@ -1,6 +1,9 @@
 import { useCallback } from "react";
 
-export default function FeedPostCard({ post, user, navigate, isEditingAny, setPosts, onDelete, onUpdate, disableNavigation = false, onNavigateOverride = null }) {
+export default function FeedPostCard({
+	post, user, navigate, isEditingAny, setPosts, onDelete, onUpdate,
+	disableNavigation = false, onNavigateOverride = null
+}) {
 	// whoa memory leak
 	const handleNavigate = useCallback(() => {
 		if (disableNavigation) return;
