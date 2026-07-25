@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 // A Laravel Model is a PHP class that represents one database table. Think of it as "your database
 // table, but as a smart PHP object", instead of raw SQL Queries.

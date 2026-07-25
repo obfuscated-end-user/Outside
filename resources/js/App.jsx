@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import { AuthProvider } from "./AuthContext";
 import { useAuth } from "./AuthContext";
-
 import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 import PostPage from "./pages/PostPage";

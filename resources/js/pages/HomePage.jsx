@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-import { useAuth } from "../AuthContext";
-import Layout from "../Layout";
 import axiosClient from "../api/axiosClient";
+import { useAuth } from "../AuthContext";
 import useConfirm from "../hooks/useConfirm";
 import { usePosts } from "../hooks/usePosts";	// is this any different from `import usePosts`?
+import Layout from "../Layout";
 import ConfirmModal from "../components/ConfirmModal";
 import FeedPostCard from "../components/FeedPostCard";
 import LoginForm from "../components/LoginForm";

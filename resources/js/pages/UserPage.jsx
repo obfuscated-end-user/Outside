@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+
 import axiosClient from "../api/axiosClient";
-import Layout from "../Layout";
 import { useAuth } from "../AuthContext";
-import NotFound from "./NotFound";
-import FeedPostCard from "../components/FeedPostCard";
-import ConfirmModal from "../components/ConfirmModal";
 import useConfirm from "../hooks/useConfirm";
+import Layout from "../Layout";
+import ConfirmModal from "../components/ConfirmModal";
+import FeedPostCard from "../components/FeedPostCard";
+import NotFound from "./NotFound";
 
 export default function UserPage() {
 	const { username } = useParams();

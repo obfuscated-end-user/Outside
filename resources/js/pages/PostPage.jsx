@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import Layout from "../Layout";
-import NotFound from "./NotFound";
 import axiosClient from "../api/axiosClient";
 import { useAuth } from "../AuthContext";
-import PostEditor from "../components/PostEditor";
+import useConfirm from "../hooks/useConfirm";
+import Layout from "../Layout";
 import ConfirmModal from "../components/ConfirmModal";
 import FeedPostCard from "../components/FeedPostCard";
-import useConfirm from "../hooks/useConfirm";
+import PostEditor from "../components/PostEditor";
+import NotFound from "./NotFound";
 
 export default function PostPage() {
 	const { username, postId } = useParams();
