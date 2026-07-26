@@ -9,3 +9,4 @@ Route::get('/posts/{post}', [PostController::class, 'show']);
 
 Route::get('/users/{user:name}', [UserController::class, 'show']);
 Route::get('/users/{user:name}/posts', [PostController::class, 'userPosts']);
+Route::get('/users/{user:name}/profile', [UserController::class, 'profile']);

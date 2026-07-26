@@ -121,4 +121,22 @@ class UserController extends Controller {
 		$request->session()->regenerateToken();
 		return response()->json(['authenticated' => false]);
 	}
+
+	public function profile(User $user) {
+		return response()->json([
+			'user' => [
+				// this part right here is kind of like:
+				// 'id' => $user->id, 'name' => $user->name, etc.
+				...$user->only([
+					'id',
+					'name',
+					'display_name',
+					'created_at',
+					'updated_at'
+				]),
+				'post_count' => $user->posts()->count(),
+			],
+			'posts' => $user->posts()->withUser()->latest()->get()
+		]);
+	}
 }

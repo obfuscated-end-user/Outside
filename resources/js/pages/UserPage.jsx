@@ -39,13 +39,13 @@ export default function UserPage() {
 
 	useEffect(() => {
 		setLoading(true);
-		Promise.all([
-			axiosClient.get(`/api/users/${username}`),
-			axiosClient.get(`/api/users/${username}/posts`)
-		])
-			.then(([userRes, postsRes]) => {
-				setUser(userRes.data);
-				setPosts(postsRes.data.map(p => ({ ...p, isEditing: false, editBody: "" })));
+		axiosClient
+			.get(`/api/users/${username}/profile`)
+			.then(res => {
+				setUser(res.data.user);
+				setPosts(res.data.posts.map(
+					p => ({ ...p, isEditing: false, editBody: "" })
+				));
 			})
 			.catch(() => setUser(null))
 			.finally(() => setLoading(false));
