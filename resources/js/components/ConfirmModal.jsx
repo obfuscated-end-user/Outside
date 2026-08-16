@@ -19,7 +19,7 @@ export default function ConfirmModal({ show, message, onClose, onConfirm }) {
 						Cancel
 					</button>
 					<button
-						onClick={() => {if (onConfirm) onConfirm(); onClose();}}
+						onClick={onConfirm}
 						className="px-4 py-2 bg-red-600 cursor-pointer text-white rounded"
 					>
 						Confirm

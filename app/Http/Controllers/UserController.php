@@ -7,21 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller {
+	private function userData(User $user): array {
+		return $user->only(['id', 'name', 'display_name', 'created_at', 'updated_at']);
+	}
+
 	public function me() {
+		$user = auth()->guard()->user();
+
 		return response()->json([
-			'authenticated' => auth()->guard()->check(),
-			'user' => auth()->guard()->user()
+			'authenticated' => $user !== null,
+			'user' => $user ? $this->userData($user) : null
 		]);
 	}
 
 	public function show(User $user) {
 		return response()->json([
-			'id' => $user->id,
-			'name' => $user->name,
-			'display_name' => $user->display_name,
-			'created_at' => $user->created_at,
-			'updated_at' => $user->updated_at,
-			'post_count' => $user->posts()->count(),
+			...$this->userData($user),
+			'post_count' => $user->posts()->count()
 		]);
 	}
 
@@ -30,7 +32,7 @@ class UserController extends Controller {
 		// If the validation fails, Laravel won't move past this line.
 		$request->merge([
 			'name' => $request->name,
-			'email' => strtolower($request->email),
+			'email' => strtolower($request->email)
 		]);
 
 		$data = $request->validate([
@@ -39,6 +41,7 @@ class UserController extends Controller {
 			// length must be 3-30 characters, contain letters, numbers, hyphens, and underscores
 			'name' => [
 				'required',
+				'string',
 				'min:3',
 				'max:30',
 				'regex:/^[a-z0-9_-]+$/',
@@ -47,20 +50,23 @@ class UserController extends Controller {
 			// not unique unlike 'name', regex at the end prevents weird unicode abuse
 			'display_name' => [
 				'required',
+				'string',
 				'min:1',
 				'max:50',
 				'regex:/^[\pL\pN\s._-]+$/u',
-				'string'
 			],
 			// must look like an email
 			'email' => [
 				'required',
+				'string',
 				'email',
+				'max:255',
 				Rule::unique('users', 'email')
 			],
 			// length must be 8-200 characters
 			'password' => [
 				'required',
+				'string',
 				'min:8',
 				'max:200'
 			]
@@ -86,8 +92,15 @@ class UserController extends Controller {
 
 	public function login(Request $request) {
 		$credentials = $request->validate([
-			'login-name' => 'required',
-			'login-password' => 'required'
+			'login-name' => [
+				'required',
+				'string',
+				'max:30'
+			],
+			'login-password' => [
+				'required',
+				'string'
+			]
 		]);
 
 		$success = auth()->guard()->attempt([
@@ -109,7 +122,7 @@ class UserController extends Controller {
 		$request->session()->regenerate();
 
 		return response()->json([
-			'user' => auth()->guard()->user(),
+			'user' => $this->userData(auth()->guard()->user()),
 			'authenticated' => true
 		]);
 	}
@@ -125,15 +138,7 @@ class UserController extends Controller {
 	public function profile(User $user) {
 		return response()->json([
 			'user' => [
-				// this part right here is kind of like:
-				// 'id' => $user->id, 'name' => $user->name, etc.
-				...$user->only([
-					'id',
-					'name',
-					'display_name',
-					'created_at',
-					'updated_at'
-				]),
+				...$this->userData($user),
 				'post_count' => $user->posts()->count(),
 			],
 			'posts' => $user->posts()->withUser()->latest()->get()

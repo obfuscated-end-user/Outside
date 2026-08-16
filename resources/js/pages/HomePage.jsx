@@ -71,9 +71,14 @@ export default function HomePage() {
 
 	const handleDeletePost = async id => {
 		openConfirm("Are you sure you want to delete this post?", async () => {
-			await axiosClient.delete(`/api/posts/${id}`);		// "DELETE /api/posts/${id}"
-			setPosts(prev => prev.filter(p => p.id !== id));	// Removes that post from the list.
-			closeConfirm();
+			try {
+				await axiosClient.delete(`/api/posts/${id}`);		// "DELETE /api/posts/${id}"
+				setPosts(prev => prev.filter(p => p.id !== id));	// Removes that post from the list.
+				closeConfirm();
+			} catch (error) {
+				console.error(error);
+				alert("Failed to delete post.");
+			}
 		});
 	};
 

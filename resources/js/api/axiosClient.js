@@ -6,6 +6,8 @@ const axiosClient = axios.create({
 	baseURL: import.meta.env.VITE_API_URL || "http://127.0.0.1:8000",
 	// send/receive Laravel session cookies
 	withCredentials: true,
+	xsrfCookieName: "XSRF-TOKEN",
+	xsrfHeaderName: "X-XSRF-TOKEN",
 	headers: {
 		"X-Requested-With": "XMLHttpRequest",
 		Accept: "application/json"

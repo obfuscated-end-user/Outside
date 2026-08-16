@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 // The PostController handles all post-related web requests, (create, edit, update, delete).
 // TBD, some functions don't have comments describing what they do.
@@ -12,17 +13,12 @@ class PostController extends Controller {
 	private function validatePost(Request $request): array {
 		// Checks if 'body' is filled.
 		// https://api.laravel.com/docs/12.x/Illuminate/Http/Request.html#method_validate
-		$data = $request->validate(['body' => ['required', 'max:400']]);
+		$data = $request->validate(['body' => ['required', 'string', 'max:400']]);
 		// Strip any potential HTML and PHP stuff the user might enter.
 		// https://www.php.net/manual/en/function.strip-tags.php
-		$data['body'] = trim(strip_tags($data['body']));
+		$data['body'] = trim($data['body']);
 
 		return $data;
-	}
-
-	// TBD
-	private function authorizePost(Post $post): void {
-		abort_if(auth()->guard()->id() !== $post->user_id, 403);
 	}
 
 	// Generate Post ID.
@@ -52,13 +48,17 @@ class PostController extends Controller {
 	public function store(Request $request) {
 		$data = $this->validatePost($request);
 		// use the current user's id as `user_id`
-		$data['id'] = $this->generatePostId();
-		$data['user_id'] = auth()->guard()->id();
+		// $data['id'] = $this->generatePostId();
+		// $data['user_id'] = auth()->guard()->id();
 
 		// Use Post model to create this field and save to database.
 		// I think this is it here?
 		// https://api.laravel.com/docs/12.x/Illuminate/Database/Eloquent/Builder.html#method_create
-		$post = Post::create($data);
+		$post = Post::create([
+			'id' => $this->generatePostId(),
+			'body' => $data['body'],
+			'user_id' => $request->user()->id
+		]);
 
 		// Return a response as a JSON.
 		// https://laravel.com/docs/12.x/responses
@@ -68,8 +68,9 @@ class PostController extends Controller {
 	// Saves edited posts.
 	// $post is the post we're trying to update and $request gives us the incoming form data,
 	// whatever the user typed in for their new values.
-	public function update(Post $post, Request $request) {
-		$this->authorizePost($post);
+	public function update(Request $request, Post $post) {
+		// $this->authorizePost($post);
+		Gate::authorize('update', $post);
 		// Update the post with the values provided.
 		// https://api.laravel.com/docs/12.x/Illuminate/Database/Eloquent/Builder.html#method_update
 		$post->update($this->validatePost($request));
@@ -78,7 +79,7 @@ class PostController extends Controller {
 	}
 
 	public function destroy(Post $post) {
-		$this->authorizePost($post);
+		Gate::authorize('delete', $post);
 		$post->delete();
 		return response()->noContent();
 		// if the frontend needs a message after you delete a post then use this instead
