@@ -47,9 +47,6 @@ class PostController extends Controller {
 
 	public function store(Request $request) {
 		$data = $this->validatePost($request);
-		// use the current user's id as `user_id`
-		// $data['id'] = $this->generatePostId();
-		// $data['user_id'] = auth()->guard()->id();
 
 		// Use Post model to create this field and save to database.
 		// I think this is it here?
@@ -69,7 +66,6 @@ class PostController extends Controller {
 	// $post is the post we're trying to update and $request gives us the incoming form data,
 	// whatever the user typed in for their new values.
 	public function update(Request $request, Post $post) {
-		// $this->authorizePost($post);
 		Gate::authorize('update', $post);
 		// Update the post with the values provided.
 		// https://api.laravel.com/docs/12.x/Illuminate/Database/Eloquent/Builder.html#method_update

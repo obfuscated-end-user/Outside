@@ -139,7 +139,7 @@ class UserController extends Controller {
 		return response()->json([
 			'user' => [
 				...$this->userData($user),
-				'post_count' => $user->posts()->count(),
+				'post_count' => $user->posts()->count()
 			],
 			'posts' => $user->posts()->withUser()->latest()->get()
 		]);

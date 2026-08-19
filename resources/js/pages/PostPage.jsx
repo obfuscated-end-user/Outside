@@ -12,30 +12,16 @@ export default function PostPage() {
 	const { postId } = useParams();
 	const navigate = useNavigate();
 	const { user: currentUser } = useAuth();
-
 	const [post, setPost] = useState(null);
 	const [loading, setLoading] = useState(true);
-
 	const { confirmState, openConfirm, closeConfirm } = useConfirm();
 
 	useEffect(() => {
 		setLoading(true);
-
-		axiosClient
-			.get(`/api/posts/${postId}`)
-			.then(res => {
-				setPost({
-					...res.data,
-					isEditing: false,
-					editBody: "",
-				});
-			})
-			.catch(() => {
-				setPost(null);
-			})
-			.finally(() => {
-				setLoading(false);
-			});
+		axiosClient.get(`/api/posts/${postId}`)
+			.then(res => { setPost({ ...res.data, isEditing: false, editBody: "" }); })
+			.catch(() => { setPost(null); })
+			.finally(() => { setLoading(false); });
 	}, [postId]);
 
 	const handleDelete = () => {
@@ -46,7 +32,6 @@ export default function PostPage() {
 			async () => {
 				try {
 					await axiosClient.delete(`/api/posts/${post.id}`);
-
 					closeConfirm();
 					navigate("/");
 				} catch (error) {
@@ -64,17 +49,8 @@ export default function PostPage() {
 			"Save changes to this post?",
 			async () => {
 				try {
-					const res = await axiosClient.put(
-						`/api/posts/${id}`,
-						{ body }
-					);
-
-					setPost({
-						...res.data,
-						isEditing: false,
-						editBody: "",
-					});
-
+					const res = await axiosClient.put(`/api/posts/${id}`, { body });
+					setPost({ ...res.data, isEditing: false, editBody: "" });
 					closeConfirm();
 				} catch (error) {
 					console.error("Failed to update post:", error);
@@ -84,13 +60,8 @@ export default function PostPage() {
 		);
 	};
 
-	if (loading) {
-		return <div className="p-8">Loading...</div>;
-	}
-
-	if (!post) {
-		return <NotFound />;
-	}
+	if (loading) return <div className="p-8">Loading...</div>;
+	if (!post) return <NotFound />;
 
 	return (
 		<Layout>
@@ -99,9 +70,10 @@ export default function PostPage() {
 				user={currentUser}
 				navigate={navigate}
 				isEditingAny={post.isEditing}
-				setPosts={updater => {
+				setPosts={fn => {
+					// adapt single post into array-like update
 					setPost(prev => {
-						const updated = updater([prev])[0];
+						const updated = fn([prev])[0];
 						return updated;
 					});
 				}}

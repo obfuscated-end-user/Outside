@@ -27,7 +27,7 @@ export default function HomePage() {
 		name: "",
 		display_name: "",
 		email: "",
-		password: "",
+		password: ""
 	});
 	const [loginForm, setLoginForm] = useState({ name: "", password: "" });
 	const [newPost, setNewPost] = useState({ body: "" });
@@ -72,8 +72,8 @@ export default function HomePage() {
 	const handleDeletePost = async id => {
 		openConfirm("Are you sure you want to delete this post?", async () => {
 			try {
-				await axiosClient.delete(`/api/posts/${id}`);		// "DELETE /api/posts/${id}"
-				setPosts(prev => prev.filter(p => p.id !== id));	// Removes that post from the list.
+				await axiosClient.delete(`/api/posts/${id}`);	 // "DELETE /api/posts/${id}"
+				setPosts(prev => prev.filter(p => p.id !== id)); // Removes that post from the list.
 				closeConfirm();
 			} catch (error) {
 				console.error(error);
@@ -101,8 +101,8 @@ export default function HomePage() {
 					p.id === id ? {...res.data, isEditing: false, editBody: ""} : p
 				));
 				closeConfirm();
-			} catch (err) {
-				// replace this alert() later with something more "user-friendly" 
+			} catch (error) {
+				// replace this alert() later with something more "user-friendly"
 				alert("Failed to update post.");
 			}
 		});

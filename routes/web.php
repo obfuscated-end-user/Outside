@@ -14,6 +14,7 @@ Route::middleware('web')->group(function() {
 	// Instead of passing a function as a second argument, you can pass an array containing:
 	// [Controller::class, 'methodName']
 	// This makes it reusable, instead of writing multiple inline functions doing the same thing.
+	// user-related
 	Route::post('/login', [UserController::class, 'login'])->middleware('throttle:login');
 	Route::post('/register', [UserController::class, 'register'])->middleware('throttle:register');
 	Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
@@ -21,15 +22,17 @@ Route::middleware('web')->group(function() {
 
 	// maybe important later
 	Route::get('/csrf-cookie', function (Request $request) {
-		return response()->json([
-			'csrf_token' => csrf_token(),
-		]);
+		return response()->json(['csrf_token' => csrf_token()]);
 	});
 
 	Route::middleware('auth')->group(function () {
-		Route::post('/api/posts', [PostController::class, 'store'])->middleware('throttle:posts');
-		Route::put('/api/posts/{post}', [PostController::class, 'update']) ->middleware('throttle:posts');
-		Route::delete('/api/posts/{post}', [PostController::class, 'destroy']) ->middleware('throttle:posts');
+		// post-related
+		Route::post('/api/posts', [PostController::class, 'store'])
+			->middleware('throttle:posts');
+		Route::put('/api/posts/{post}', [PostController::class, 'update'])
+			->middleware('throttle:posts');
+		Route::delete('/api/posts/{post}', [PostController::class, 'destroy'])
+			->middleware('throttle:posts');
 	});
 });
 
