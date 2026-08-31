@@ -61,7 +61,7 @@ export default function HomePage() {
 		}
 		openConfirm("Create this post?", async () => {
 			// Sends "POST /api/posts" with the new body.
-			const res = await axiosClient.post("/api/posts",{ body:newPost.body });
+			const res = await axiosClient.post("/api/posts", { body:newPost.body });
 			setPosts(prev => [res.data, ...prev]);
 			setNewPost({ body: "" });	// Clear the form.
 			setFormError("");
@@ -75,8 +75,8 @@ export default function HomePage() {
 				await axiosClient.delete(`/api/posts/${id}`);	 // "DELETE /api/posts/${id}"
 				setPosts(prev => prev.filter(p => p.id !== id)); // Removes that post from the list.
 				closeConfirm();
-			} catch (error) {
-				console.error(error);
+			} catch (err) {
+				console.error(err);
 				alert("Failed to delete post.");
 			}
 		});
@@ -101,8 +101,9 @@ export default function HomePage() {
 					p.id === id ? {...res.data, isEditing: false, editBody: ""} : p
 				));
 				closeConfirm();
-			} catch (error) {
+			} catch (err) {
 				// replace this alert() later with something more "user-friendly"
+				console.error(err);
 				alert("Failed to update post.");
 			}
 		});

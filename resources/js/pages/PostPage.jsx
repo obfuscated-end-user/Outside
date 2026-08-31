@@ -34,8 +34,8 @@ export default function PostPage() {
 					await axiosClient.delete(`/api/posts/${post.id}`);
 					closeConfirm();
 					navigate("/");
-				} catch (error) {
-					console.error("Failed to delete post:", error);
+				} catch (err) {
+					console.error(err);
 					alert("Failed to delete post.");
 				}
 			}
@@ -52,8 +52,8 @@ export default function PostPage() {
 					const res = await axiosClient.put(`/api/posts/${id}`, { body });
 					setPost({ ...res.data, isEditing: false, editBody: "" });
 					closeConfirm();
-				} catch (error) {
-					console.error("Failed to update post:", error);
+				} catch (err) {
+					console.error(err);
 					alert("Failed to update post.");
 				}
 			}
